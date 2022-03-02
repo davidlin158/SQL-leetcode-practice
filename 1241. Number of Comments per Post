@@ -1,0 +1,45 @@
+#Write an SQL query to find the number of comments per post. The result table should contain post_id and its corresponding number_of_comments.
+#The Submissions table may contain duplicate comments. You should count the number of unique comments per post.
+#The Submissions table may contain duplicate posts. You should treat them as one post.
+#The result table should be ordered by post_id in ascending order.
+#The query result format is in the following example.
+# Input: 
+Submissions table:
++---------+------------+
+| sub_id  | parent_id  |
++---------+------------+
+| 1       | Null       |
+| 2       | Null       |
+| 1       | Null       |
+| 12      | Null       |
+| 3       | 1          |
+| 5       | 2          |
+| 3       | 1          |
+| 4       | 1          |
+| 9       | 1          |
+| 10      | 2          |
+| 6       | 7          |
++---------+------------+
+Output: 
++---------+--------------------+
+| post_id | number_of_comments |
++---------+--------------------+
+| 1       | 3                  |
+| 2       | 2                  |
+| 12      | 0                  |
++---------+--------------------+
+#
+
+
+#seperate them to post and comment, then select the thing we need.
+SELECT POST.post_id, IFNULL(Count(COMMENT.sub_id),0) AS number_of_comments
+FROM (SELECT DISTINCT sub_id AS post_id
+      FROM Submissions
+      WHERE parent_id IS NULL) AS POST
+      LEFT JOIN
+      (SELECT DISTINCT sub_id, parent_id
+       FROM Submissions
+       WHERE parent_id IS NOT NULL) AS COMMENT
+  ON POST.post_id = COMMENT.parent_id
+GROUP BY POST.post_id
+ORDER BY POST.post_id;
