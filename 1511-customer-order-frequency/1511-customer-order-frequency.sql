@@ -5,6 +5,7 @@ SELECT
     name
 FROM Customers 
 # get use to using, instead of just single line
+# USING Clause is used to match only one column when more than one column matches.
 JOIN Orders USING(customer_id) 
 JOIN Product USING(product_id)
 GROUP BY customer_id
