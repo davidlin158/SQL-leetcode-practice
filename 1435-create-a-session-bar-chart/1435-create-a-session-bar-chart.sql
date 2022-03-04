@@ -1,4 +1,6 @@
 # Write your MySQL query statement below
+here use union , and seperate them by each parts.
+sum(how many in the same category)
 SELECT '[0-5>' AS 'bin', SUM(duration/60 < 5) AS 'total'
 FROM Sessions
 UNION
